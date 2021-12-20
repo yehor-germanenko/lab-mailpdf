@@ -1,0 +1,21 @@
+service: generatePdf
+
+package:
+  exclude:
+    -./**
+  include:
+    -node-modules/**
+    -build/**
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  app:
+    handler: build/src/index.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true

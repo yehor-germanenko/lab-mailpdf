@@ -1,13 +1,6 @@
-.idea
-src
-build/tests
-build/example
-example
-tests
-.babelrc
-.eslintignore
-.eslintrc
-.gitignore
-.nvmrc
-README.md
+# package directories
+node_modules
+jspm_packages
 
+# Serverless directories
+.serverless

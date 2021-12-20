@@ -7,12 +7,15 @@
   "scripts": {
     "start": "yarn build && node build/src/index.js",
     "clean": "rm -Rf build",
+    "deploy:dev": "yarn build && sudo sls deploy",
     "build": "babel src --out-dir build/src && babel example --copy-files --out-dir build/example",
     "build:watch": "babel src -w --out-dir build/src"
   },
   "dependencies": {
     "@react-pdf/renderer": "1.6.2",
+    "aws-sdk": "^2.1046.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
     "nanoid": "^3.1.30",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

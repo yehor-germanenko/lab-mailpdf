@@ -1,10 +1,19 @@
-import fs from 'fs';
-
 import React from 'react';
+
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import ReactPDF from '@react-pdf/renderer';
 
-import {pdfComponents} from "../example";
+import { pdfComponents } from "../example";
+
+dotenv.config();
+
+AWS.config.update({
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
+const s3 = new AWS.S3();
 
 const getBaseComponent = (components, component) => {
 	if (component in components) {
@@ -29,30 +38,54 @@ const renderPdf = async (component, data) => {
 	})
 };
 
-const handler = async (event) => {
+export const handler = async (event, context, callBack) => {
 	try {
 		let reactTemplate;
 		try {
 			reactTemplate = getBaseComponent(pdfComponents, event.template);
-		} catch (e) {
-			console.log(e.message);
+		} catch (err) {
+			console.log(err);
 			return;
 		}
 
 		const buffer = await renderPdf(reactTemplate, event.data);
 
-		fs.writeFileSync(`./pdfs/${nanoid()}.pdf`, buffer, 'binary');
-	} catch (e) {
-		console.log(e.message);
+		const s3Params = {
+			Bucket: "pdfs.christee",
+			Key: `tmp/${nanoid()}.pdf`,
+			Body: buffer,
+			ContentType: "application/pdf",
+			ServerSideEncryption: "AES256"
+		};
+
+		const res = await s3.putObject(s3Params, err => {
+			if (err) {
+				console.log("err", err);
+				return callBack(null, { err });
+			}
+		});
+		if (res) {
+			console.log(res);
+		}
+	} catch (err) {
+		return context.fail(err);
 	}
 };
 
-const event = {
-	data: {
-		title: 'Example',
-		text: 'example'
-	},
-	template: 'document'
-}
+// For local testing:
 
-handler(event);
+// const event = {
+// 	data: {
+// 		title: "title",
+// 		text: "text"
+// 	},
+// 	template: "document"
+// }
+//
+// handler({
+// 	data: {
+// 		title: "title",
+// 		text: "text"
+// 	},
+// 	template: "document"
+// })
