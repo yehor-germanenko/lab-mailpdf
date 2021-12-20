@@ -11,6 +11,9 @@ provider:
   name: aws
   runtime: nodejs12.x
 
+plugins:
+  - serverless-iam-roles-per-function
+
 functions:
   app:
     handler: build/src/index.handler
@@ -19,3 +22,8 @@ functions:
           path: /
           method: ANY
           cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - "s3:Put*"
+        Resource: arn:aws:s3:::pdfs.christee/*

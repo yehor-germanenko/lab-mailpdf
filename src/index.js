@@ -9,10 +9,6 @@ import { pdfComponents } from "../example";
 
 dotenv.config();
 
-AWS.config.update({
-	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
 const s3 = new AWS.S3();
 
 const getBaseComponent = (components, component) => {
@@ -52,7 +48,7 @@ export const handler = async (event, context, callBack) => {
 
 		const s3Params = {
 			Bucket: "pdfs.christee",
-			Key: `tmp/${nanoid()}.pdf`,
+			Key: `${nanoid()}.pdf`,
 			Body: buffer,
 			ContentType: "application/pdf",
 			ServerSideEncryption: "AES256"
@@ -63,25 +59,18 @@ export const handler = async (event, context, callBack) => {
 				console.log("err", err);
 				return callBack(null, { err });
 			}
-		});
+		}).promise();
 		if (res) {
 			console.log(res);
 		}
 	} catch (err) {
+		console.log("err", err);
 		return context.fail(err);
 	}
 };
 
 // For local testing:
 
-// const event = {
-// 	data: {
-// 		title: "title",
-// 		text: "text"
-// 	},
-// 	template: "document"
-// }
-//
 // handler({
 // 	data: {
 // 		title: "title",
