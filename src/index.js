@@ -10,6 +10,7 @@ import { pdfComponents } from "../example";
 dotenv.config();
 
 const s3 = new AWS.S3();
+const ses = new AWS.SES();
 
 const getBaseComponent = (components, component) => {
 	if (component in components) {
@@ -34,17 +35,18 @@ const renderPdf = async (component, data) => {
 	})
 };
 
-export const handler = async (event, context, callBack) => {
+export const handler = async (event, context, callback) => {
+	const data = JSON.parse(event.body);
 	try {
 		let reactTemplate;
 		try {
-			reactTemplate = getBaseComponent(pdfComponents, event.template);
+			reactTemplate = getBaseComponent(pdfComponents, data.template);
 		} catch (err) {
 			console.log(err);
 			return;
 		}
 
-		const buffer = await renderPdf(reactTemplate, event.data);
+		const buffer = await renderPdf(reactTemplate, data.data);
 
 		const s3Params = {
 			Bucket: "pdfs.christee",
@@ -54,17 +56,48 @@ export const handler = async (event, context, callBack) => {
 			ServerSideEncryption: "AES256"
 		};
 
-		const res = await s3.putObject(s3Params, err => {
+		const s3Res = await s3.upload(s3Params, err => {
 			if (err) {
-				console.log("err", err);
-				return callBack(null, { err });
+				return callback(null, {
+					statusCode: err.statusCode,
+					body: err.message
+				});
 			}
 		}).promise();
-		if (res) {
-			console.log(res);
+
+		const sesParams = {
+			Source: 'no-reply@askchristee.com',
+			Destination: {
+				ToAddresses: [data.email]
+			},
+			ReplyToAddresses: [],
+			Message: {
+				Body: {
+					Html: {
+						Charset: "UTF-8",
+						Data: `Pdf report is <a href="${s3Res.Location}">here</a>.`
+					}
+				},
+				Subject: {
+					Charset: 'UTF-8',
+					Data: 'SES Example'
+				}
+			}
+		};
+
+		const sesRes = await ses.sendEmail(sesParams, err => {
+			if (err) {
+				return callback(null, {
+					statusCode: err.statusCode,
+					body: err.message
+				});
+			}
+		}).promise();
+
+		if (sesRes) {
+			callback(null, { statusCode: 200 })
 		}
 	} catch (err) {
-		console.log("err", err);
 		return context.fail(err);
 	}
 };

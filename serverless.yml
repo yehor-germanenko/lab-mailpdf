@@ -4,7 +4,6 @@ package:
   exclude:
     -./**
   include:
-    -node-modules/**
     -build/**
 
 provider:
@@ -19,11 +18,14 @@ functions:
     handler: build/src/index.handler
     events:
       - http:
-          path: /
-          method: ANY
+          path: /send-pdf
+          method: POST
           cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - "s3:Put*"
-        Resource: arn:aws:s3:::pdfs.christee/*
+          - "ses:*"
+        Resource:
+          - arn:aws:s3:::pdfs.christee/*
+          - arn:aws:ses:us-east-1:*:*
