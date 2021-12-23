@@ -8,7 +8,7 @@
     "start": "yarn clean && yarn build:webpack && node build/main.js",
     "clean": "rm -Rf build",
     "deploy:dev": "yarn build && sudo sls deploy",
-    "build:webpack": "wp --config webpack.config.js --stats-error-details",
+    "build:webpack": "webpack --config webpack.config.js --stats-error-details",
     "build:babel": "babel src --out-dir build/src",
     "build:watch": "babel src -w --out-dir build/src"
   },
