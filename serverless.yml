@@ -2,6 +2,7 @@ service: generatePdf
 
 package:
   exclude:
+    -node-modules/**
     -./**
   include:
     -build/**

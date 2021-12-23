@@ -1,4 +1,11 @@
 {
-  "presets": ["es2015","react","stage-2"],
-  "plugins": ["babel-plugin-syntax-decorators","babel-plugin-transform-runtime"]
+  "presets": ["@babel/preset-env","@babel/preset-react"],
+  "plugins": [[
+    "file-loader",
+    {
+      "name": "[name].[ext]",
+      "outputPath": "/build/assets",
+      "publicPath": "/build/assets"
+    }
+  ]]
 }

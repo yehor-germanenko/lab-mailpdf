@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime.js";
 import React from 'react';
 
 import AWS from "aws-sdk";
@@ -5,7 +6,9 @@ import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import ReactPDF from '@react-pdf/renderer';
 
-import { pdfComponents } from "../example";
+import testData from './test-data.js';
+
+import { pdfComponents } from "./pdfs";
 
 dotenv.config();
 
@@ -36,11 +39,11 @@ const renderPdf = async (component, data) => {
 };
 
 export const handler = async (event, context, callback) => {
-	const data = JSON.parse(event.body);
+	const data = event.body;
 	try {
 		let reactTemplate;
 		try {
-			reactTemplate = getBaseComponent(pdfComponents, data.template);
+			reactTemplate = getBaseComponent(pdfComponents, data.data.dat.meta.engine);
 		} catch (err) {
 			console.log(err);
 			return;
@@ -58,6 +61,7 @@ export const handler = async (event, context, callback) => {
 
 		const s3Res = await s3.upload(s3Params, err => {
 			if (err) {
+				console.log("s3ResErr", err);
 				return callback(null, {
 					statusCode: err.statusCode,
 					body: err.message
@@ -87,6 +91,7 @@ export const handler = async (event, context, callback) => {
 
 		const sesRes = await ses.sendEmail(sesParams, err => {
 			if (err) {
+				console.log("sesResErr", err);
 				return callback(null, {
 					statusCode: err.statusCode,
 					body: err.message
@@ -95,7 +100,8 @@ export const handler = async (event, context, callback) => {
 		}).promise();
 
 		if (sesRes) {
-			callback(null, { statusCode: 200 })
+			console.log("sesRes", sesRes);
+			// callback(null, { statusCode: 200 })
 		}
 	} catch (err) {
 		return context.fail(err);
@@ -104,10 +110,13 @@ export const handler = async (event, context, callback) => {
 
 // For local testing:
 
-// handler({
-// 	data: {
-// 		title: "title",
-// 		text: "text"
-// 	},
-// 	template: "document"
-// })
+handler({
+    body: {
+		data: {
+			dat: testData,
+			title: "Christee Report: Buyer Choice",
+			subtitle: "Buyer Choice"
+		},
+        email: "foreman270478@gmail.com",
+    }
+})
