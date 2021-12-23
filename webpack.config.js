@@ -19,12 +19,13 @@ module.exports = {
                 use: 'babel-loader'
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
-                loader: 'file-loader',
-                options: {
-                    name: '[path][name].[ext]',
-                },
-            }
+                test: /\.(png|jpg|gif)$/i,
+                use: [
+                    {
+                        loader: 'url-loader'
+                    }
+                ],
+            },
         ],
     },
 };

@@ -1,11 +1,3 @@
 {
-  "presets": ["@babel/preset-env","@babel/preset-react"],
-  "plugins": [[
-    "file-loader",
-    {
-      "name": "[name].[ext]",
-      "outputPath": "/build/assets",
-      "publicPath": "/build/assets"
-    }
-  ]]
+  "presets": ["@babel/preset-env","@babel/preset-react"]
 }
