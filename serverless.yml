@@ -16,7 +16,7 @@ plugins:
 
 functions:
   app:
-    handler: build/src/index.handler
+    handler: build/main.handler
     events:
       - http:
           path: /send-pdf

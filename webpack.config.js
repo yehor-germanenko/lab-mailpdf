@@ -3,7 +3,7 @@ const APP_SOURCE = path.join(__dirname, "src");
 
 module.exports = {
     target: "node",
-    mode: "production",
+    mode: "development",
     entry: path.join(APP_SOURCE, "index.js"),
     output: {
         path: path.join(__dirname, "build"),

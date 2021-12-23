@@ -6,8 +6,6 @@ import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import ReactPDF from '@react-pdf/renderer';
 
-import testData from './test-data.js';
-
 import { pdfComponents } from "./pdfs";
 
 dotenv.config();
@@ -39,7 +37,7 @@ const renderPdf = async (component, data) => {
 };
 
 export const handler = async (event, context, callback) => {
-	const data = event.body;
+	const data = JSON.parse(event.body);
 	try {
 		let reactTemplate;
 		try {
@@ -61,7 +59,6 @@ export const handler = async (event, context, callback) => {
 
 		const s3Res = await s3.upload(s3Params, err => {
 			if (err) {
-				console.log("s3ResErr", err);
 				return callback(null, {
 					statusCode: err.statusCode,
 					body: err.message
@@ -91,7 +88,6 @@ export const handler = async (event, context, callback) => {
 
 		const sesRes = await ses.sendEmail(sesParams, err => {
 			if (err) {
-				console.log("sesResErr", err);
 				return callback(null, {
 					statusCode: err.statusCode,
 					body: err.message
@@ -100,8 +96,10 @@ export const handler = async (event, context, callback) => {
 		}).promise();
 
 		if (sesRes) {
-			console.log("sesRes", sesRes);
-			// callback(null, { statusCode: 200 })
+			callback(null, {
+				statusCode: 200,
+				body: "Link to pdf has been sent to your email!"
+			})
 		}
 	} catch (err) {
 		return context.fail(err);
@@ -110,13 +108,13 @@ export const handler = async (event, context, callback) => {
 
 // For local testing:
 
-handler({
-    body: {
-		data: {
-			dat: testData,
-			title: "Christee Report: Buyer Choice",
-			subtitle: "Buyer Choice"
-		},
-        email: "foreman270478@gmail.com",
-    }
-})
+// handler({
+//     body: {
+// 		data: {
+// 			dat: testData,
+// 			title: "Christee Report: Buyer Choice",
+// 			subtitle: "Buyer Choice"
+// 		},
+//         email: "foreman270478@gmail.com",
+//     }
+// })
