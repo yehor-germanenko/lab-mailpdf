@@ -17,7 +17,10 @@ const getBaseComponent = (components, component) => {
 	if (component in components) {
 		return components[component];
 	}
-	throw new Error(`No component defined with name ${component}`);
+	throw {
+		statusCode: 422,
+		message: `No such template defined with name ${component}`
+	};
 };
 
 const renderPdf = async (component, data) => {
@@ -38,12 +41,21 @@ const renderPdf = async (component, data) => {
 
 export const handler = async (event, context, callback) => {
 	const data = JSON.parse(event.body);
+	if (!data.data.dat || !data.data.title || !data.email) {
+		callback(null, {
+			statusCode: 400,
+			body: "Some parameter are missing"
+		});
+	}
 	try {
 		let reactTemplate;
 		try {
 			reactTemplate = getBaseComponent(pdfComponents, data.data.dat.meta.engine);
 		} catch (err) {
-			console.log(err);
+			callback(null, {
+				statusCode: err.statusCode,
+				body: err.message
+			});
 			return;
 		}
 
@@ -93,7 +105,7 @@ export const handler = async (event, context, callback) => {
 					body: err.message
 				});
 			}
-		}).promise();
+		});
 
 		if (sesRes) {
 			callback(null, {
@@ -105,16 +117,3 @@ export const handler = async (event, context, callback) => {
 		return context.fail(err);
 	}
 };
-
-// For local testing:
-
-// handler({
-//     body: {
-// 		data: {
-// 			dat: testData,
-// 			title: "Christee Report: Buyer Choice",
-// 			subtitle: "Buyer Choice"
-// 		},
-//         email: "foreman270478@gmail.com",
-//     }
-// })

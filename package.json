@@ -5,10 +5,10 @@
   "main": "build/src/index.js",
   "private": true,
   "scripts": {
-    "start": "yarn clean && yarn build:webpack && node build/main.js",
+    "start": "yarn build:webpack && node build/main.js",
     "clean": "rm -Rf build",
     "deploy:dev": "yarn build:webpack && sudo sls deploy",
-    "build:webpack": "webpack --config webpack.config.js --stats-error-details"
+    "build:webpack": "yarn clean && webpack --config webpack.config.js"
   },
   "dependencies": {
     "@react-pdf/renderer": "^2.0.21",
