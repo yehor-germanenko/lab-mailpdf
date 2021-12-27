@@ -2,13 +2,10 @@ import "regenerator-runtime/runtime.js";
 import React from 'react';
 
 import AWS from "aws-sdk";
-import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import ReactPDF from '@react-pdf/renderer';
 
 import { pdfComponents } from "./pdfs";
-
-dotenv.config();
 
 const s3 = new AWS.S3();
 const ses = new AWS.SES();
@@ -59,7 +56,7 @@ export const handler = async (event, context, callback) => {
 			return;
 		}
 
-		const buffer = await renderPdf(reactTemplate, data.data);
+		const buffer = await renderPdf(reactTemplate, data.data.dat);
 
 		const s3Params = {
 			Bucket: "pdfs.christee",
@@ -69,7 +66,7 @@ export const handler = async (event, context, callback) => {
 			ServerSideEncryption: "AES256"
 		};
 
-		const s3Res = await s3.upload(s3Params, err => {
+		const s3Res = await s3.upload(s3Params, (err) => {
 			if (err) {
 				return callback(null, {
 					statusCode: err.statusCode,

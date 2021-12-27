@@ -1,0 +1,212 @@
+/*
+ * Copyright 2020-2021 AskChristee, LLC. All rights reserved.
+ */
+
+import { TResponseMeta } from '.';
+
+type TBoRPForm = {
+  condo: number;
+  county_select: number;
+  display_pdf_output: string;
+  doconv: string;
+  dofha: string;
+  doType: string[];
+  dousda: string;
+  dova: string;
+  email: string;
+  filing_status: string;
+  ftbuyer: string;
+  inc_rent: number;
+  input_ltv: number;
+  input_ma: number;
+  inputcred: number;
+  int_rate: number;
+  invest_return: number;
+  m_rent: number;
+  prop_app: number;
+  prop_t: number;
+  q_income: number;
+  report_years: number;
+  s_cred: number;
+  sp: number;
+  state: string;
+  term: number;
+};
+
+type TBoRPLambda = {
+  county_select: number;
+  doconv: string;
+  dofha: string;
+  dousda: string;
+  dova: string;
+  email: string;
+  filing_status: string;
+  ftbuyer: string;
+  inc_rent: number;
+  input_ltv: number;
+  input_ma: number;
+  inputcred: number;
+  int_rate: number;
+  invest_return: number;
+  m_rent: number;
+  prop_app: number;
+  prop_t: number;
+  q_income: number;
+  report_years: number;
+  s_cred: number;
+  sp: number;
+  term: number;
+};
+
+export type TBuyOrRentParams = {
+  pForm: TBoRPForm;
+  pLambda: TBoRPLambda;
+};
+
+export type TBoRACalc = {
+  state_sel: string;
+  fumess: string;
+  area: string;
+  report_years: number;
+  m_rent: number;
+  sp: number;
+  ma: number;
+  temp_rate: number;
+  ltv: number;
+  total_mtge: number;
+  t_piti: number;
+  temp_pi: number;
+  temp_mi: number;
+  temp_pt: number;
+  temp_ins: number;
+  d_payment: number;
+  totalcc: number;
+  dol_cred: number;
+  temp_cred: number;
+  r_cash: number;
+  total_rent: number;
+  total_piti: number;
+  total_net_payment: number;
+  tot_duct: number;
+  total_int: number;
+  total_taxes: number;
+  tax_saving: number;
+  print_t_bracket: number;
+  net_mopiti: number;
+  cash_value: number;
+  temp_return: number;
+  h_value: number;
+  temp_app: number;
+  ma_bal: number;
+  net_equity: number;
+  net_gain: number;
+  rate_return: number;
+  avg_duct: number;
+  avg_taxs: number;
+  mon_taxs: number;
+  project$: string;
+  detail$: string;
+  local$: string;
+};
+
+export type TBoRANotes = {
+  pdf_mess: string;
+  pdf_head1: string;
+  pdf_head2: string;
+  pdf_head3: string;
+  pdf_head4: string;
+  pdf_mess1: string;
+  pdf_mess2: string;
+  pdf_mess3: string;
+  pdf_mess4: string;
+  pdf_mess5: string;
+  pdf_mess6: string;
+  pdf_mess7: string;
+  pdf_mess8: string;
+  pdf_mess9: string;
+  pdf_mess10: string;
+  pdf_mess11: string;
+  pdf_mess12: string;
+  pdf_mess13: string;
+  pdf_mess14: string;
+  pdf_mess15: string;
+  pdf_mess16: string;
+  pdf_mess17: string;
+  pdf_mess18: string;
+  pdf_mess19: string;
+  pdf_mess20: string;
+  pdf_mess21: string;
+  pdf_mess22: string;
+  pdf_mess23: string;
+  pdf_mess24: string;
+  pdf_mess25: string;
+  pdf_mess26: string;
+  pdf_mess27: string;
+  pdf_mess28: string;
+  pdf_mess29: string;
+  pdf_mess30: string;
+  pdf_mess31: string;
+  pdf_mess32: string;
+  pdf_mess33: string;
+  pdf_mess34: string;
+  pdf_mess35: string;
+  pdf_mess36: string;
+  pdf_mess37: string;
+  pdf_mess38: string;
+  pdf_mess39: string;
+};
+
+export type TBoRAClose = {
+  sp: number;
+  area: string;
+  state_sel: string;
+  current_date: string;
+  est_close: string;
+  first_payment: string;
+  app_fee: number;
+  home_ins: number;
+  cred_rpt: number;
+  flood_cert: number;
+  pest_ins: number;
+  underfee: number;
+  loan_org$: string;
+  abs_fee: number;
+  clo_fee: number;
+  ins_tit: number;
+  survey: number;
+  int_int: number;
+  days_interest: number;
+  haz_insur$: string;
+  escrow_tax: number;
+  clo_tax: number;
+  net_tax: number;
+  transfer: number;
+  docstamp: number;
+  mtgetax: number;
+  clerk_office: number;
+  totalcc: number;
+  s_credit$: string;
+  l_credit$: string;
+  total_cred: number;
+  d_payment: number;
+  r_cash: number;
+  tax_period$: string;
+  p_tax_adj$: string;
+  tax_escrow_date: string;
+  tax_escrow: number;
+};
+
+export type TBuyOrRentResponseObject = {
+  aCalc: TBoRACalc;
+  aNotes: TBoRANotes;
+  aClose: TBoRAClose;
+};
+
+export type TBuyOrRentResponse = {
+  meta: TResponseMeta;
+  params: TBuyOrRentParams;
+  conventional: TBuyOrRentResponseObject | undefined;
+  fha: TBuyOrRentResponseObject | undefined;
+  va: TBuyOrRentResponseObject | undefined;
+  usda: TBuyOrRentResponseObject | undefined;
+};
