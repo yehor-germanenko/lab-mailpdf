@@ -11,7 +11,7 @@
     "build:webpack": "yarn clean && webpack --config webpack.config.js"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^2.0.21",
+    "@react-pdf/renderer": "^1.6.17",
     "@react-pdf/styled-components": "^1.4.0",
     "aws-sdk": "^2.1046.0",
     "body-parser": "^1.19.0",

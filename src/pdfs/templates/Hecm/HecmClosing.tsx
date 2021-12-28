@@ -4,7 +4,7 @@
 
 import React from "react";
 import { View, StyleSheet, Text } from "@react-pdf/renderer";
-import { PdfCash, PdfText } from '../../atoms/Helpers/CommonFormats';
+import { PdfCash, PdfText } from '../../atoms';
 import { THecmAClose } from "../../types/api";
 
 
