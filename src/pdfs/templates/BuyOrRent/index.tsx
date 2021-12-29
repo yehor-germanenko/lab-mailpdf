@@ -216,13 +216,15 @@ const ReportDetailsRefactor: React.FC<DetailProps> = ({ aNotes }) => {
 };
 
 interface Props {
-  conventional: TBuyOrRentResponseObject | undefined;
-  fha: TBuyOrRentResponseObject | undefined;
-  va: TBuyOrRentResponseObject | undefined;
-  usda: TBuyOrRentResponseObject | undefined;
+    dat: {
+        conventional: TBuyOrRentResponseObject | undefined;
+        fha: TBuyOrRentResponseObject | undefined;
+        va: TBuyOrRentResponseObject | undefined;
+        usda: TBuyOrRentResponseObject | undefined;
+    }
 }
 
-const PdfReportContainer: React.FC<Props> = ({ conventional, fha, va, usda }) => {
+const PdfReportContainer: React.FC<Props> = ({dat: { conventional, fha, va, usda}}) => {
   let title = '';
   return (
     <Document>

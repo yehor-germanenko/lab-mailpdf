@@ -372,7 +372,7 @@ function SectionFooter(pdf: TInvestmentPDF) {
 }
 
 
-const ReportContainer: React.FC<Props> = ({ pdf, aClose }) => {
+const ReportContainer: React.FC<InvestPdf> = ({ pdf, aClose }) => {
 	return (
 		<Fragment>
 			<Page style={styles.body}>
@@ -420,12 +420,16 @@ const ReportContainer: React.FC<Props> = ({ pdf, aClose }) => {
  * title from pdf.button.
  */
 
-interface Props {
+interface InvestPdf {
 	pdf: TInvestmentPDF,
 	aClose: TInvestmentAClose,
 }
 
-const PdfReport: React.FC<Props> = ({ pdf, aClose }) => {
+interface Props {
+	dat: InvestPdf;
+}
+
+const PdfReport: React.FC<Props> = ({ dat: { pdf, aClose}}) => {
 	return (
 		<Document>
 			<ReportContainer {...{ pdf: pdf, aClose: aClose }}/>

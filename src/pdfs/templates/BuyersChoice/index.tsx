@@ -129,24 +129,24 @@ const ContainerFinal = ({ dat, title, program }: any) => {
   );
 }
 
-const BuyersChoice = ({ dat, title }: any ) => {
+const BuyersChoice = ({ dat }: any ) => {
   return (
     <Document>
       {dat.conventional.aCalc && (
         <ContainerFinal
           dat={dat.conventional}
-          title={title}
+          title={dat.title}
           program="Conventional"
         />
       )}
       {dat.fha.aCalc && (
-        <ContainerFinal dat={dat.fha} title={title} program="FHA" />
+        <ContainerFinal dat={dat.fha} title={dat.title} program="FHA" />
       )}
       {dat.va.aCalc && (
-        <ContainerFinal dat={dat.va} title={title} program="VA" />
+        <ContainerFinal dat={dat.va} title={dat.title} program="VA" />
       )}
       {dat.usda.aCalc && (
-        <ContainerFinal dat={dat.usda} title={title} program="USDA" />
+        <ContainerFinal dat={dat.usda} title={dat.title} program="USDA" />
       )}
     </Document>
   );

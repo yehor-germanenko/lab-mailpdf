@@ -58,16 +58,20 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
-  aCalc: THecmCalc;
-  bCalc: THecmCalc;
-  aClose: THecmAClose;
-  aNotes: THecmANotes;
-  bNotes: THecmANotes;
-  title: string | undefined;
+interface CalcParams {
+    aCalc: THecmCalc;
+    bCalc: THecmCalc;
+    aClose: THecmAClose;
+    aNotes: THecmANotes;
+    bNotes: THecmANotes;
+    title: string | undefined;
 }
 
-const HecmPdfReport: React.FC<Props> = ({ aCalc, bCalc }) => {
+interface Props {
+  dat: CalcParams;
+}
+
+const HecmPdfReport: React.FC<CalcParams> = ({ aCalc, bCalc }) => {
   console.log('HECM->PDFHelper->aCalc:', aCalc);
   console.log('HECM->PDFHelper->bCalc:', bCalc);
 
@@ -283,7 +287,7 @@ const HecmPdfReport: React.FC<Props> = ({ aCalc, bCalc }) => {
   );
 };
 
-const ContainerFinal: React.FC<Props> = ({ aCalc, bCalc, aClose, aNotes, bNotes, title }) => {
+const ContainerFinal: React.FC<CalcParams> = ({ aCalc, bCalc, aClose, aNotes, bNotes, title }) => {
   return (
     <Fragment>
       {bCalc && (
@@ -333,7 +337,7 @@ const ContainerFinal: React.FC<Props> = ({ aCalc, bCalc, aClose, aNotes, bNotes,
   );
 };
 
-const PdfReportContainer: React.FC<Props> = ({ aCalc, bCalc, aClose, aNotes, bNotes, title }) => {
+const PdfReportContainer: React.FC<Props> = ({dat: { aCalc, bCalc, aClose, aNotes, bNotes, title }}) => {
   return (
     <Document>
       <ContainerFinal {...{ aCalc, bCalc, aClose, aNotes, bNotes }} title={title} />

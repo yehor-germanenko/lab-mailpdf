@@ -201,11 +201,15 @@ const ReportDetails:React.FC<RProps> = ({aNotes}) => {
   );
 }
 
-interface Props {
+interface Results {
     results: TSellerNetResults,
     title: string
 }
-const PdfReportContainer: React.FC<Props> = ({ results, title }) => {
+
+interface Props {
+    dat: Results;
+}
+const PdfReportContainer: React.FC<Props> = ({ dat: { results, title }}) => {
   return (
     <Document>
       <Page style={styles.body}>

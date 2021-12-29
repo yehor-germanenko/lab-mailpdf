@@ -56,7 +56,7 @@ export const handler = async (event, context, callback) => {
 			return;
 		}
 
-		const buffer = await renderPdf(reactTemplate, data.data.dat);
+		const buffer = await renderPdf(reactTemplate, {dat: {...data.data.dat, title: data.data.title }});
 
 		const s3Params = {
 			Bucket: "pdfs.christee",

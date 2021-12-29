@@ -272,10 +272,12 @@ const ReportDetailsTwo: React.FC<DetailProps> = ({ aPdf2 }) => {
 }
 
 interface Props {
-  results: TVacationResults
+  dat: {
+      results: TVacationResults
+  }
 }
 
-const PdfReportContainer: React.FC<Props> = ({ results }) => {
+const PdfReportContainer: React.FC<Props> = ({ dat: { results}}) => {
   return (
     <Fragment>
       <Document>

@@ -416,10 +416,12 @@ function ReportContainer(pdf: TBudgetPDF) {
  */
 
 interface Props {
-  pdf: TBudgetPDF;
+  dat: {
+    pdf: TBudgetPDF;
+  };
 }
 
-const PdfReport: React.FC<Props> = ({ pdf }) => {
+const PdfReport: React.FC<Props> = ({ dat: { pdf}}) => {
   return (
     <Document>
       <ReportContainer {...pdf} />

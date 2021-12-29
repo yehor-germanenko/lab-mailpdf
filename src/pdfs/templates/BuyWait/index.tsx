@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PdfReport: React.FC<Props> = ({ results }) => {
+const PdfReport: React.FC<Result> = ({ results }) => {
   return (
     <View style={styles.tableContainer}>
       <View style={styles.row}>
@@ -319,7 +319,7 @@ const PdfReport: React.FC<Props> = ({ results }) => {
   );
 };
 
-const PdfReportMessage: React.FC<Props> = ({ results }) => {
+const PdfReportMessage: React.FC<Result> = ({ results }) => {
   return (
     <View style={styles.tableContainer}>
       <View style={styles.row}>{results.aNotes && <Text style={styles.description2}>{results.aNotes.pdfmess}</Text>}</View>
@@ -373,7 +373,7 @@ const PdfReportMessage: React.FC<Props> = ({ results }) => {
   );
 };
 
-const BuyWaitPdf: React.FC<Props> = ({ results }) => {
+const BuyWaitPdf: React.FC<Result> = ({ results }) => {
   return (
     <Fragment>
       <Page style={styles.body}>
@@ -397,11 +397,15 @@ const BuyWaitPdf: React.FC<Props> = ({ results }) => {
   );
 };
 
-interface Props {
-  results: TBuyWaitResults;
+interface Result {
+    results: TBuyWaitResults;
 }
 
-const BuyWaitFinal: React.FC<Props> = ({ results }) => {
+interface Props {
+    dat: Result
+}
+
+const BuyWaitFinal: React.FC<Props> = ({dat: {results}}) => {
   return (
     <Document>
       <BuyWaitPdf results={results} />

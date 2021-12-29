@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PdfReport: React.FC<Props> = ({ pdf }) => {
+const PdfReport: React.FC<Pdf> = ({ pdf }) => {
   return (
     <View style={styles.tableContainer}>
       <View style={styles.row}>
@@ -291,7 +291,7 @@ const PdfReport: React.FC<Props> = ({ pdf }) => {
   );
 };
 
-const BuyWaitPdf: React.FC<Props> = ({ pdf }) => {
+const BuyWaitPdf: React.FC<Pdf> = ({ pdf }) => {
   return (
     <Fragment>
       <Page style={styles.body}>
@@ -306,11 +306,15 @@ const BuyWaitPdf: React.FC<Props> = ({ pdf }) => {
   );
 };
 
-interface Props {
-  pdf: TClosingCostPdf;
+interface Pdf {
+    pdf: TClosingCostPdf;
 }
 
-const ClosingCostFinal: React.FC<Props> = ({ pdf }) => {
+interface Props {
+  dat: Pdf;
+}
+
+const ClosingCostFinal: React.FC<Props> = ({dat: { pdf }}) => {
   console.log('ClosingCost Final pdf->', pdf);
 
   return (
