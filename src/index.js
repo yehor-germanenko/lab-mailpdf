@@ -22,7 +22,7 @@ const getBaseComponent = (components, component) => {
 };
 
 const sendMail = (mailOptions) => {
-	return new Promise((resolve, reject)=>{
+	return new Promise((resolve, reject) => {
 		transporter.sendMail(mailOptions, (err, info) => {
 			if (err) {
 				reject(err);
@@ -50,7 +50,7 @@ const renderPdf = async (component, data) => {
 
 export const handler = async (event, context, callback) => {
 	const data = JSON.parse(event.body);
-	if (!data.data.dat || !data.data.title || !data.email) {
+	if (!data || !data.meta.title || !data.meta.email) {
 		callback(null, {
 			statusCode: 400,
 			body: "Some parameter are missing"
@@ -59,7 +59,7 @@ export const handler = async (event, context, callback) => {
 	try {
 		let reactTemplate;
 		try {
-			reactTemplate = getBaseComponent(pdfComponents, data.data.dat.meta.engine);
+			reactTemplate = getBaseComponent(pdfComponents, data.meta.engine);
 		} catch (err) {
 			callback(null, {
 				statusCode: err.statusCode,
@@ -67,15 +67,15 @@ export const handler = async (event, context, callback) => {
 			});
 		}
 
-		const buffer = await renderPdf(reactTemplate, {dat: {...data.data.dat, title: data.data.title }});
+		const buffer = await renderPdf(reactTemplate, {dat: {...data, title: data.meta.title }});
 
 		const mailOptions = {
 			from: "no-reply@askchristee.com",
-			to: data.email,
+			to: data.meta.email,
 			subject: "SES Example",
 			text: "Your pdf is here",
 			attachments: {
-				filename: `${data.data.dat.meta.engine}-report.pdf`,
+				filename: `${data.meta.engine}-report.pdf`,
 				content: buffer,
 				contentType: "application/pdf",
 			},
